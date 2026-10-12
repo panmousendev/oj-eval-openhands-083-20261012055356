@@ -1,31 +1,38 @@
-#include <iostream>
-
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
 
 // Node structure for singly circular linked list
 struct Node {
     int value;
-    Node* next;
-    
-    Node(int val) : value(val), next(nullptr) {}
+    struct Node* next;
 };
+
+// Function to create a new node
+struct Node* createNode(int val) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->value = val;
+    newNode->next = NULL;
+    return newNode;
+}
 
 int main() {
     int n, m;
-    cin >> n >> m;
+    if (scanf("%d %d", &n, &m) != 2) {
+        return 1;
+    }
     
     // Edge case: if n == 1, just output 1
     if (n == 1) {
-        cout << 1 << endl;
+        printf("1\n");
         return 0;
     }
     
     // Build the circular linked list
-    Node* head = new Node(1);
-    Node* current = head;
+    struct Node* head = createNode(1);
+    struct Node* current = head;
     
     for (int i = 2; i <= n; i++) {
-        current->next = new Node(i);
+        current->next = createNode(i);
         current = current->next;
     }
     
@@ -42,8 +49,8 @@ int main() {
     }
     
     // Now 'current' is the last node, and we'll start counting from head
-    Node* prev = current;  // Node before the current counting position
-    Node* curr = head;     // Current counting position (starts at 1)
+    struct Node* prev = current;  // Node before the current counting position
+    struct Node* curr = head;     // Current counting position (starts at 1)
     
     while (prev != curr) {  // While there's more than one node
         // Count m-1 steps to find the node before the one to delete
@@ -53,16 +60,16 @@ int main() {
         }
         
         // Delete curr node
-        cout << curr->value << endl;
+        printf("%d\n", curr->value);
         prev->next = curr->next;
-        Node* toDelete = curr;
+        struct Node* toDelete = curr;
         curr = curr->next;
-        delete toDelete;
+        free(toDelete);
     }
     
     // Output the last remaining node
-    cout << curr->value << endl;
-    delete curr;
+    printf("%d\n", curr->value);
+    free(curr);
     
     return 0;
 }
