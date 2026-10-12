@@ -10,6 +10,9 @@ struct Node {
 // Function to create a new node
 struct Node* createNode(int val) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        return NULL;
+    }
     newNode->value = val;
     newNode->next = NULL;
     return newNode;
@@ -29,10 +32,16 @@ int main() {
     
     // Build the circular linked list
     struct Node* head = createNode(1);
+    if (head == NULL) {
+        return 1;
+    }
     struct Node* current = head;
     
     for (int i = 2; i <= n; i++) {
         current->next = createNode(i);
+        if (current->next == NULL) {
+            return 1;
+        }
         current = current->next;
     }
     
